@@ -2,18 +2,17 @@ import * as THREE from "https://cdn.skypack.dev/three";
 
 import { car } from "./car.js";
 import { background } from "./background.js";
-import { lua } from "./lua.js";
+import { luna } from "./luna.js";
+import { ground } from "./ground.js";
 
 import { RoomEnvironment } from "https://cdn.skypack.dev/three/examples/jsm/environments/RoomEnvironment.js";
 
 class CarRacingGame {
   constructor() {
-    console.log("estou 123");
     this.initialize();
   }
 
   initialize() {
-    console.log("estou aqui");
     const container = document.getElementById("container");
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setPixelRatio(window.devicePixelRatio);
@@ -47,20 +46,11 @@ class CarRacingGame {
     this.scene.background = new THREE.Color(0x808080);
     this.scene.fog = new THREE.FogExp2(0x89b2eb, 0.00125);
 
-    this.lua = new lua.Lua({
+    this.luna = new luna.Luna({
       scene: this.scene,
     });
-    // Inicialização do ground
-    const ground = new THREE.Mesh(
-      new THREE.PlaneGeometry(20000, 20000, 10, 10),
-      new THREE.MeshStandardMaterial({
-        color: 0xf6f47f,
-      })
-    );
-    ground.castShadow = false;
-    ground.receiveShadow = true;
-    ground.rotation.x = -Math.PI / 2;
-    this.scene.add(ground);
+
+    this.ground = new ground.Ground({ scene: this.scene });
 
     this.car = new car.Car({
       scene: this.scene,

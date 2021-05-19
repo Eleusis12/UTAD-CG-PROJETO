@@ -1,7 +1,7 @@
 import * as THREE from "https://cdn.skypack.dev/three";
 
-export const lua = (() => {
-  class Lua {
+export const luna = (() => {
+  class Luna {
     constructor(params) {
       this.params = params;
       this.initialize();
@@ -25,5 +25,5 @@ export const lua = (() => {
       this.params.scene.add(light);
     }
   }
-  return { Lua: Lua };
+  return { Luna: Luna };
 })();
