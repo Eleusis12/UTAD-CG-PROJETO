@@ -37,14 +37,8 @@ class CarRacingGame {
     const pmremGenerator = new THREE.PMREMGenerator(this.renderer);
 
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0xeeeeee);
-    this.scene.environment = pmremGenerator.fromScene(
-      new RoomEnvironment()
-    ).texture;
-    this.scene.fog = new THREE.Fog(0xeeeeee, 10, 50);
-
-    this.scene.background = new THREE.Color(0x808080);
-    this.scene.fog = new THREE.FogExp2(0x89b2eb, 0.00125);
+    this.scene.background = new THREE.Color(0xcce0ff);
+    this.scene.fog = new THREE.Fog(0xcce0ff, 500, 10000);
 
     this.luna = new luna.Luna({
       scene: this.scene,
