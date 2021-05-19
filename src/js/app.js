@@ -1,13 +1,9 @@
 import * as THREE from "https://cdn.skypack.dev/three";
 
 import { car } from "./car.js";
+import { background } from "./background.js";
 
-import { OrbitControls } from "https://cdn.skypack.dev/three/examples/jsm/controls/OrbitControls.js";
 import { RoomEnvironment } from "https://cdn.skypack.dev/three/examples/jsm/environments/RoomEnvironment.js";
-import { GLTFLoader } from "https://cdn.skypack.dev/three/examples/jsm/loaders/GLTFLoader.js";
-import { DRACOLoader } from "https://cdn.skypack.dev/three/examples/jsm/loaders/DRACOLoader.js";
-
-let wheels = [];
 
 class CarRacingGame {
   constructor() {
@@ -38,10 +34,6 @@ class CarRacingGame {
     );
     this.camera.position.set(4.25, 1.4, -4.5);
 
-    this.controls = new OrbitControls(this.camera, container);
-    this.controls.target.set(0, 0.5, 0);
-    this.controls.update();
-
     const pmremGenerator = new THREE.PMREMGenerator(this.renderer);
 
     this.scene = new THREE.Scene();
@@ -60,6 +52,8 @@ class CarRacingGame {
     this.car = new car.Car({
       scene: this.scene,
     });
+
+    this.background = new background.Background({ scene: this.scene });
 
     this.raf();
     this.onWindowResize();
@@ -81,11 +75,31 @@ class CarRacingGame {
       this.raf();
       this.step((t - this.previousRaf) / 1000.0);
       this.renderer.render(this.scene, this.camera);
+      this.cameraUpdate();
+
       this.previousRaf = t;
     });
   }
+
+  cameraUpdate() {
+    //creating an offset position for camera with respect to the car
+    var offset = new THREE.Vector3(
+      this.car.position.x + 10,
+      this.car.position.y + 3,
+      this.car.position.z
+    );
+    //tried to create delay position value for enable smooth transition for camera
+    this.camera.position.lerp(offset, 0.2);
+    //updating lookat alway look at the car
+    this.camera.lookAt(
+      this.car.position.x,
+      this.car.position.y,
+      this.car.position.z
+    );
+  }
   step(timeElapsed) {
-    this.car.Update(timeElapsed);
+    this.car.update(timeElapsed);
+    this.background.update(timeElapsed);
   }
 }
 

@@ -126,9 +126,11 @@ export const car = (() => {
           break;
       }
     }
-    Update(timeElapsed) {
+    update(timeElapsed) {
       // Inicializar a velocidade a 0
       this.velocity = 0;
+
+      //   const time = -performance.now() / 1000;
 
       if (this.keys.w == true) {
         this.velocity = 0.5;
@@ -138,11 +140,13 @@ export const car = (() => {
 
       this.position.z -= this.velocity;
 
-      console.log(this.position);
       if (this.carModel) {
         this.carModel.position.copy(this.position);
         // console.log(this.carModel);
       }
+      //   for (let i = 0; i < this.wheels.length; i++) {
+      //     this.wheels[i].rotation.x = time * Math.PI;
+      //   }
     }
   }
 
