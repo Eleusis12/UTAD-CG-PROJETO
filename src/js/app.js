@@ -2,6 +2,7 @@ import * as THREE from "https://cdn.skypack.dev/three";
 
 import { car } from "./car.js";
 import { background } from "./background.js";
+import { lua } from "./lua.js";
 
 import { RoomEnvironment } from "https://cdn.skypack.dev/three/examples/jsm/environments/RoomEnvironment.js";
 
@@ -43,11 +44,23 @@ class CarRacingGame {
     ).texture;
     this.scene.fog = new THREE.Fog(0xeeeeee, 10, 50);
 
-    this.grid = new THREE.GridHelper(100, 40, 0x000000, 0x000000);
-    this.grid.material.opacity = 0.1;
-    this.grid.material.depthWrite = false;
-    this.grid.material.transparent = true;
-    this.scene.add(this.grid);
+    this.scene.background = new THREE.Color(0x808080);
+    this.scene.fog = new THREE.FogExp2(0x89b2eb, 0.00125);
+
+    this.lua = new lua.Lua({
+      scene: this.scene,
+    });
+    // Inicialização do ground
+    const ground = new THREE.Mesh(
+      new THREE.PlaneGeometry(20000, 20000, 10, 10),
+      new THREE.MeshStandardMaterial({
+        color: 0xf6f47f,
+      })
+    );
+    ground.castShadow = false;
+    ground.receiveShadow = true;
+    ground.rotation.x = -Math.PI / 2;
+    this.scene.add(ground);
 
     this.car = new car.Car({
       scene: this.scene,

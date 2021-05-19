@@ -2,10 +2,7 @@ import * as THREE from "https://cdn.skypack.dev/three";
 
 import { math } from "./libs/helpers/math.js";
 
-import { OrbitControls } from "https://cdn.skypack.dev/three/examples/jsm/controls/OrbitControls.js";
-import { RoomEnvironment } from "https://cdn.skypack.dev/three/examples/jsm/environments/RoomEnvironment.js";
 import { GLTFLoader } from "https://cdn.skypack.dev/three/examples/jsm/loaders/GLTFLoader.js";
-import { DRACOLoader } from "https://cdn.skypack.dev/three/examples/jsm/loaders/DRACOLoader.js";
 
 export const background = (() => {
   class BackgroundCloud {
@@ -21,7 +18,7 @@ export const background = (() => {
 
     loadModel() {
       const loader = new GLTFLoader();
-      loader.setPath("./resources/Clouds/GLTF/");
+      loader.setPath("/resources/Clouds/GLTF/");
       var self = this;
       loader.load("Cloud" + math.rand_int(1, 3) + ".glb", (glb) => {
         self.mesh = glb.scene;
@@ -92,7 +89,6 @@ export const background = (() => {
         ["SmallPalmTree.glb", "PalmTree.png", 3],
         ["BigPalmTree.glb", "PalmTree.png", 5],
         ["Skull.glb", "Ground.png", 1],
-        ["Scorpion.glb", "Scorpion.png", 1],
         ["Pyramid.glb", "Ground.png", 40],
         ["Monument.glb", "Ground.png", 10],
         ["Cactus1.glb", "Ground.png", 5],
@@ -104,14 +100,15 @@ export const background = (() => {
 
       const texLoader = new THREE.TextureLoader();
       const texture = texLoader.load(
-        "../resources/DesertPack/Blend/Textures/" + textureName
+        "resources/DesertPack/Blend/Textures/" + textureName
       );
       texture.encoding = THREE.sRGBEncoding;
 
       const loader = new GLTFLoader();
-      loader.setPath("../resources/DesertPack/GLTF/");
+      loader.setPath("resources/DesertPack/GLTF/");
       loader.load(asset, (glb) => {
         this.mesh = glb.scene;
+        console.log(this.params.scene);
         this.params.scene.add(this.mesh);
 
         this.position.x = math.rand_range(0, 2000);
