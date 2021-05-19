@@ -1,6 +1,6 @@
 import * as THREE from "https://cdn.skypack.dev/three";
 
-import { math } from "./math.js";
+import { math } from "./libs/helpers/math.js";
 
 import { OrbitControls } from "https://cdn.skypack.dev/three/examples/jsm/controls/OrbitControls.js";
 import { RoomEnvironment } from "https://cdn.skypack.dev/three/examples/jsm/environments/RoomEnvironment.js";

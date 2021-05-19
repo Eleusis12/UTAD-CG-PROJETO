@@ -144,9 +144,9 @@ export const car = (() => {
         this.carModel.position.copy(this.position);
         // console.log(this.carModel);
       }
-      //   for (let i = 0; i < this.wheels.length; i++) {
-      //     this.wheels[i].rotation.x = time * Math.PI;
-      //   }
+      for (let i = 0; i < this.wheels.length; i++) {
+        this.wheels[i].rotation.x += -(this.velocity * Math.PI) / 20;
+      }
     }
   }
 
