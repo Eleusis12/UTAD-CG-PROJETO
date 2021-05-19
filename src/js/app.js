@@ -1,138 +1,96 @@
-document.addEventListener("DOMContentLoaded", Start);
+import * as THREE from "https://cdn.skypack.dev/three";
 
-let camera, scene, renderer;
+import { car } from "./car.js";
 
-let grid;
-let controls;
+import { OrbitControls } from "https://cdn.skypack.dev/three/examples/jsm/controls/OrbitControls.js";
+import { RoomEnvironment } from "https://cdn.skypack.dev/three/examples/jsm/environments/RoomEnvironment.js";
+import { GLTFLoader } from "https://cdn.skypack.dev/three/examples/jsm/loaders/GLTFLoader.js";
+import { DRACOLoader } from "https://cdn.skypack.dev/three/examples/jsm/loaders/DRACOLoader.js";
 
-const wheels = [];
+let wheels = [];
 
-function Start() {
-  const container = document.getElementById("container");
+class CarRacingGame {
+  constructor() {
+    console.log("estou 123");
+    this.initialize();
+  }
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = THREE.sRGBEncoding;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 0.85;
-  container.appendChild(renderer.domElement);
+  initialize() {
+    console.log("estou aqui");
+    const container = document.getElementById("container");
+    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.outputEncoding = THREE.sRGBEncoding;
+    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    this.renderer.toneMappingExposure = 0.85;
+    container.appendChild(this.renderer.domElement);
 
-  window.addEventListener("resize", onWindowResize);
+    window.addEventListener("resize", this.onWindowResize);
 
-  //
+    //
 
-  camera = new THREE.PerspectiveCamera(
-    40,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    100
-  );
-  camera.position.set(4.25, 1.4, -4.5);
-
-  controls = new THREE.OrbitControls(camera, container);
-  controls.target.set(0, 0.5, 0);
-  controls.update();
-
-  const pmremGenerator = new THREE.PMREMGenerator(renderer);
-
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xeeeeee);
-  scene.environment = pmremGenerator.fromScene(
-    new THREE.RoomEnvironment()
-  ).texture;
-  scene.fog = new THREE.Fog(0xeeeeee, 10, 50);
-
-  grid = new THREE.GridHelper(100, 40, 0x000000, 0x000000);
-  grid.material.opacity = 0.1;
-  grid.material.depthWrite = false;
-  grid.material.transparent = true;
-  scene.add(grid);
-
-  // materials
-
-  const bodyMaterial = new THREE.MeshPhysicalMaterial({
-    color: 0xff0000,
-    metalness: 0.6,
-    roughness: 0.4,
-    clearcoat: 0.05,
-    clearcoatRoughness: 0.05,
-  });
-
-  const detailsMaterial = new THREE.MeshStandardMaterial({
-    color: 0xffffff,
-    metalness: 1.0,
-    roughness: 0.5,
-  });
-
-  const glassMaterial = new THREE.MeshPhysicalMaterial({
-    color: 0xffffff,
-    metalness: 0,
-    roughness: 0.1,
-    transmission: 0.9,
-    transparent: true,
-  });
-
-  // Car
-
-  const shadow = new THREE.TextureLoader().load("models/gltf/ferrari_ao.png");
-
-  const dracoLoader = new THREE.DRACOLoader();
-  dracoLoader.setDecoderPath("js/libs/draco/gltf/");
-
-  const loader = new THREE.GLTFLoader();
-  loader.setDRACOLoader(dracoLoader);
-
-  loader.load("models/gltf/ferrari.glb", function (gltf) {
-    const carModel = gltf.scene.children[0];
-
-    carModel.getObjectByName("body").material = bodyMaterial;
-
-    carModel.getObjectByName("rim_fl").material = detailsMaterial;
-    carModel.getObjectByName("rim_fr").material = detailsMaterial;
-    carModel.getObjectByName("rim_rr").material = detailsMaterial;
-    carModel.getObjectByName("rim_rl").material = detailsMaterial;
-    carModel.getObjectByName("trim").material = detailsMaterial;
-
-    carModel.getObjectByName("glass").material = glassMaterial;
-
-    wheels.push(
-      carModel.getObjectByName("wheel_fl"),
-      carModel.getObjectByName("wheel_fr"),
-      carModel.getObjectByName("wheel_rl"),
-      carModel.getObjectByName("wheel_rr")
+    this.camera = new THREE.PerspectiveCamera(
+      40,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      100
     );
+    this.camera.position.set(4.25, 1.4, -4.5);
 
-    // shadow
-    const mesh = new THREE.Mesh(
-      new THREE.PlaneGeometry(0.655 * 4, 1.3 * 4),
-      new THREE.MeshBasicMaterial({
-        map: shadow,
-        blending: THREE.MultiplyBlending,
-        toneMapped: false,
-        transparent: true,
-      })
-    );
-    mesh.rotation.x = -Math.PI / 2;
-    mesh.renderOrder = 2;
-    carModel.add(mesh);
+    this.controls = new OrbitControls(this.camera, container);
+    this.controls.target.set(0, 0.5, 0);
+    this.controls.update();
 
-    scene.add(carModel);
-  });
-  console.log("asdasdfcasd");
-  requestAnimationFrame(render);
+    const pmremGenerator = new THREE.PMREMGenerator(this.renderer);
+
+    this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color(0xeeeeee);
+    this.scene.environment = pmremGenerator.fromScene(
+      new RoomEnvironment()
+    ).texture;
+    this.scene.fog = new THREE.Fog(0xeeeeee, 10, 50);
+
+    this.grid = new THREE.GridHelper(100, 40, 0x000000, 0x000000);
+    this.grid.material.opacity = 0.1;
+    this.grid.material.depthWrite = false;
+    this.grid.material.transparent = true;
+    this.scene.add(this.grid);
+
+    this.car = new car.Car({
+      scene: this.scene,
+    });
+
+    this.raf();
+    this.onWindowResize();
+  }
+
+  onWindowResize() {
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
+  raf() {
+    requestAnimationFrame((t) => {
+      if (this.previousRaf === null) {
+        this.previousRAF_ = t;
+      }
+
+      this.raf();
+      this.step((t - this.previousRaf) / 1000.0);
+      this.renderer.render(this.scene, this.camera);
+      this.previousRaf = t;
+    });
+  }
+  step(timeElapsed) {
+    this.car.Update(timeElapsed);
+  }
 }
 
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+let _APP = null;
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-function render() {
-  // Aqui temos que codificar o movimento do carro
-  renderer.render(scene, camera);
-
-  requestAnimationFrame(render);
-}
+window.addEventListener("DOMContentLoaded", () => {
+  _APP = new CarRacingGame();
+});
