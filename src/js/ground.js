@@ -1,4 +1,5 @@
 import * as THREE from "https://cdn.skypack.dev/three";
+import { road } from "./road.js";
 
 export const ground = (() => {
   class Ground {
@@ -8,17 +9,35 @@ export const ground = (() => {
     }
 
     initialize() {
-      // Inicialização do ground
-      const ground = new THREE.Mesh(
-        new THREE.PlaneGeometry(20000, 20000, 10, 10),
-        new THREE.MeshStandardMaterial({
-          color: 0x808080,
-        })
+      const texture = new THREE.TextureLoader().load(
+        "resources/textures/photos_2015_09_18_fst_345jhh0ja3i.jpg"
       );
-      ground.castShadow = false;
-      ground.receiveShadow = true;
-      ground.rotation.x = -Math.PI / 2;
-      this.params.scene.add(ground);
+
+      texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+      texture.repeat.set(10000, 10000);
+      texture.encoding = THREE.sRGBEncoding;
+
+      var groundMaterial = new THREE.MeshStandardMaterial({
+        map: texture,
+      });
+
+      var mesh = new THREE.Mesh(
+        new THREE.PlaneBufferGeometry(10000, 10000),
+        groundMaterial
+      );
+      mesh.position.y = 0.0;
+      mesh.rotation.x = -Math.PI / 2;
+      mesh.receiveShadow = true;
+      this.params.scene.add(mesh);
+
+      // Agora vamos adicionar a a via da estrada ao chão
+
+      this.road = new road.Road({
+        scene: this.params.scene,
+        ROAD_LENGTH: 10000,
+        ROAD_WIDTH: 7,
+        CENTER_WIDTH: 0.12,
+      });
     }
   }
   return { Ground: Ground };

@@ -91,7 +91,6 @@ export const car = (() => {
     }
 
     initInput() {
-      console.log("Movimento yupi");
       this.keys = {
         spacebar: false,
       };
