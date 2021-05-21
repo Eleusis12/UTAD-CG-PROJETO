@@ -24,9 +24,13 @@ class CarRacingGame {
     this.renderer.toneMappingExposure = 0.85;
     container.appendChild(this.renderer.domElement);
 
-    window.addEventListener("resize", function () {
-      this.onWindowResize();
-    });
+    window.addEventListener(
+      "resize",
+      () => {
+        this.onWindowResize();
+      },
+      false
+    );
 
     this.PerspectiveCamera = new THREE.PerspectiveCamera(
       40,
@@ -74,15 +78,14 @@ class CarRacingGame {
     });
 
     this.raf();
-    this.onWindowResize(this);
+    this.onWindowResize();
   }
 
-  onWindowResize(context) {
-    const self = this;
-    self.mainCamera.aspect = window.innerWidth / window.innerHeight;
-    self.mainCamera.updateProjectionMatrix();
+  onWindowResize() {
+    this.mainCamera.aspect = window.innerWidth / window.innerHeight;
+    this.mainCamera.updateProjectionMatrix();
 
-    self.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
   raf() {
