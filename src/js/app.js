@@ -1,7 +1,7 @@
 import * as THREE from "https://cdn.skypack.dev/three";
 
 import { car } from "./car.js";
-import { luna } from "./luna.js";
+import { moon } from "./moon.js";
 import { ground } from "./ground.js";
 
 import { RoomEnvironment } from "https://cdn.skypack.dev/three/examples/jsm/environments/RoomEnvironment.js";
@@ -24,7 +24,9 @@ class CarRacingGame {
     this.renderer.toneMappingExposure = 0.85;
     container.appendChild(this.renderer.domElement);
 
-    window.addEventListener("resize", this.onWindowResize);
+    window.addEventListener("resize", function () {
+      this.onWindowResize();
+    });
 
     this.PerspectiveCamera = new THREE.PerspectiveCamera(
       40,
@@ -57,10 +59,10 @@ class CarRacingGame {
     }
 
     this.scene = new THREE.Scene();
-    // this.scene.background = new THREE.Color(0xcce0ff);
-    this.scene.fog = new THREE.Fog(0xcce0ff, 500, 10000);
+    this.scene.background = new THREE.Color(0x0c1445);
+    this.scene.fog = new THREE.Fog(0x000000, 500, 10000);
 
-    this.luna = new luna.Luna({
+    this.moon = new moon.Moon({
       scene: this.scene,
     });
 
@@ -72,14 +74,15 @@ class CarRacingGame {
     });
 
     this.raf();
-    this.onWindowResize();
+    this.onWindowResize(this);
   }
 
-  onWindowResize() {
-    this.mainCamera.aspect = window.innerWidth / window.innerHeight;
-    this.mainCamera.updateProjectionMatrix();
+  onWindowResize(context) {
+    const self = this;
+    self.mainCamera.aspect = window.innerWidth / window.innerHeight;
+    self.mainCamera.updateProjectionMatrix();
 
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    self.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
   raf() {
