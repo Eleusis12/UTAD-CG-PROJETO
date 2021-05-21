@@ -1,32 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebGL - Three.js</title>
-</head>
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>Game Menu 1.0</title>
+
+		<link rel="stylesheet" href="/gameMenu/css/gamemenu.css"/>
+	</head>
 <body>
-   
 
-		<div id="container"></div>
-
-        <div id="footer">
-			
-
-			<div class="">Movimente o carro com: <span class="h">W ou S</span> </span>
-			</div>
-
-			
-
-
-			<div class="c">Tipo de Projecção: <span class="h">o (Ortográfica)</span> / <span class="h">p (Perspetiva)</span>
-			</div>
-
-			
-            
+		<h1 class="main-font title">Game Menu</h1>
+		<ul id="main-menu"></ul>
+		<div id="loading">
+			<img id="loading-img" width="120" src="/gameMenu/img/loading.gif"/>
+			<h2 class="main-font">Loading...</h2>
 		</div>
+		
+		<div id="credits" style="display:none;margin-left:40px;margin-top:60px;">
 
-    <script  src="./js/app.js" type="module"></script>
+			<p>Game Menu Template</p>
+			<p>Develop by Leandro Curioso</p>
+			<p>leandro.curioso@gmail.com</p>
+			
+			<ul class="sub-menu" id="back-credits" style="top:0px;">
+				<li class="back">Back</li>
+			</ul>
+			
+		</div>
+		
+		<div id="assets">
+			<audio id="sfx-background" loop>
+				<source src="/gameMenu/sound/background-music.ogg"></source>
+				<source src="/gameMenu/sound/background-music.mp3"></source>
+			</audio>
+			<audio id="sfx-select">
+				<source src="/gameMenu/sound/menu_select_1.ogg"></source>
+				<source src="/gameMenu/sound/menu_select_1.mp3"></source>
+			</audio>
+			<audio id="sfx-move">
+				<source src="/gameMenu/sound/menu_move_1.ogg"></source>
+				<source src="/gameMenu/sound/menu_move_1.mp3"></source>
+			</audio>
+		</div>
+		
+
 </body>
+
+<script src="/gameMenu/js/jquery-2.1.4.min.js"></script>
+<script src="/gameMenu/js/gamemenu.js"></script>
+
 </html>
