@@ -1,0 +1,116 @@
+@font-face {
+  font-family: "gomarice_game_music_love";
+  src: 
+ 
+
+    /* Pretty Modern Browsers */ url("../fonts/gomarice_game_music_love.ttf")
+    format("truetype");
+}
+
+body {
+  background: url("../resources/img/background/background.webp") no-repeat
+    center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  text-align: center;
+}
+
+h1 {
+  font-size: 100px;
+}
+
+.title {
+  color: red;
+  position: relative;
+  top: 30px;
+  right: 5px;
+}
+
+.main-font {
+  font-family: "gomarice_game_music_love";
+}
+
+#main-menu {
+  color: #fff;
+  list-style-type: none;
+  margin: 0 auto;
+  /*display:none;*/
+  position: relative;
+  top: 100px;
+  right: 25px;
+  font-size: 30px;
+  font-family: "gomarice_game_music_love";
+  display: inline-block;
+}
+
+.sub-menu {
+  color: #fff;
+  list-style-type: none;
+  margin: 0 auto;
+  display: none;
+  position: relative;
+  top: 100px;
+  right: 25px;
+  font-size: 25px;
+  font-family: "gomarice_game_music_love";
+  display: inline-block;
+  cursor: pointer;
+}
+
+.back {
+  text-align: center;
+  color: #fff;
+  list-style-type: none;
+  margin: 0 auto;
+  display: none;
+  position: relative;
+  font-size: 25px;
+  font-family: "gomarice_game_music_love";
+  display: inline-block;
+  cursor: pointer;
+}
+
+.sub-menu-opt small {
+  font-size: 20px;
+}
+
+#main-menu li {
+  cursor: pointer;
+}
+
+#main-menu li:hover {
+  color: red;
+}
+
+.selected-opt {
+  color: red;
+}
+
+#loading {
+  position: relative;
+  top: 50px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 20px;
+  width: 160px;
+  margin: 0 auto;
+  display: none;
+}
+
+#loading h2 {
+  color: red;
+}
+
+#credits {
+  color: #fff;
+  list-style-type: none;
+  margin: 0 auto;
+  display: none;
+  position: relative;
+  top: 40px;
+  right: 25px;
+  font-size: 25px;
+  font-family: "8-bit_limit_brkregular";
+  display: inline-block;
+}
