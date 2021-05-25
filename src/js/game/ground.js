@@ -63,7 +63,7 @@ export const ground = (() => {
         new THREE.PlaneBufferGeometry(10000, 10000),
         groundMaterial
       );
-      mesh.position.y = -0.1;
+      mesh.position.y = -0.2;
       mesh.rotation.x = -Math.PI / 2;
       mesh.receiveShadow = true;
       this.params.scene.add(mesh);
@@ -72,9 +72,6 @@ export const ground = (() => {
 
       this.road = new road.Road({
         scene: this.params.scene,
-        ROAD_LENGTH: 10000,
-        ROAD_WIDTH: 7,
-        CENTER_WIDTH: 0.12,
       });
     }
   }
