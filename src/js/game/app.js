@@ -3,6 +3,7 @@ import * as THREE from "https://cdn.skypack.dev/three";
 import { car } from "./car.js";
 import { moon } from "./moon.js";
 import { ground } from "./ground.js";
+import { road } from "./road.js";
 
 import { RoomEnvironment } from "https://cdn.skypack.dev/three/examples/jsm/environments/RoomEnvironment.js";
 
@@ -71,7 +72,10 @@ class CarRacingGame {
     });
 
     this.ground = new ground.Ground({ scene: this.scene });
-    // this.road = new road.Road({ scene: this.scene });
+
+    this.road = new road.Road({
+      scene: this.scene,
+    });
 
     this.car = new car.Car({
       scene: this.scene,

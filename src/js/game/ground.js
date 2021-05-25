@@ -1,5 +1,4 @@
 import * as THREE from "https://cdn.skypack.dev/three";
-import { road } from "./road.js";
 
 export const ground = (() => {
   class Ground {
@@ -67,12 +66,6 @@ export const ground = (() => {
       mesh.rotation.x = -Math.PI / 2;
       mesh.receiveShadow = true;
       this.params.scene.add(mesh);
-
-      // Agora vamos adicionar a a via da estrada ao chão
-
-      this.road = new road.Road({
-        scene: this.params.scene,
-      });
     }
   }
   return { Ground: Ground };

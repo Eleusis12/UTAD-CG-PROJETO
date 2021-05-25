@@ -28,7 +28,7 @@ export const road = (() => {
         "resources/road/Road_001_roughness.jpg"
       );
 
-      // // Pretendemos que a rua apenas se repita na ordenada T
+      // // Pretendemos que a rua apenas se repita na ordenada
 
       roadAmbOcclusion.wrapS = THREE.ClampToEdgeWrapping;
       roadAmbOcclusion.wrapT = THREE.RepeatWrapping;
@@ -64,9 +64,10 @@ export const road = (() => {
       });
 
       var mesh = new THREE.Mesh(
-        new THREE.PlaneBufferGeometry(7, 10000),
+        new THREE.PlaneGeometry(7, 10000, 5, 2000),
         roadMaterial
       );
+
       mesh.position.y = -0.5;
       mesh.rotation.x = -Math.PI / 2;
       mesh.receiveShadow = true;
