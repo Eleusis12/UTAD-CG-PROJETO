@@ -4,8 +4,10 @@ import { car } from "./car.js";
 import { moon } from "./moon.js";
 import { ground } from "./ground.js";
 import { road } from "./road.js";
+import { clouds } from "./clouds.js";
 
 import { RoomEnvironment } from "https://cdn.skypack.dev/three/examples/jsm/environments/RoomEnvironment.js";
+import { OrbitControls } from "https://cdn.skypack.dev/three/examples/jsm/controls/OrbitControls.js";
 
 class CarRacingGame {
   constructor() {
@@ -63,6 +65,8 @@ class CarRacingGame {
       this.mainCamera = this.OrthographicCamera;
     }
 
+    // new OrbitControls(this.mainCamera, this.renderer.domElement);
+
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(0x0c1445);
     this.scene.fog = new THREE.Fog(0x000000, 500, 10000);
@@ -75,6 +79,11 @@ class CarRacingGame {
 
     this.road = new road.Road({
       scene: this.scene,
+    });
+
+    this.clouds = new clouds.Clouds({
+      scene: this.scene,
+      camera: this.mainCamera,
     });
 
     this.car = new car.Car({
@@ -112,6 +121,7 @@ class CarRacingGame {
 
   step(timeElapsed) {
     this.car.update(timeElapsed);
+    this.clouds.animate();
   }
   initInput() {
     document.addEventListener("keypress", (e) => this.onKeyPress(e), false);
