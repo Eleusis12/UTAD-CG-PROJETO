@@ -4,16 +4,11 @@ import { math } from "../libs/helpers/math.js";
 import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.122/examples/jsm/loaders/GLTFLoader.js";
 import { FBXLoader } from "https://cdn.jsdelivr.net/npm/three@0.124/examples/jsm/loaders/FBXLoader.js";
 import { ImprovedNoise } from "https://cdn.jsdelivr.net/npm/three@0.124/examples/jsm/math/ImprovedNoise.js";
-import { WEBGL } from "https://cdn.jsdelivr.net/npm/three@0.124/examples/jsm/WebGL.js";
 
 export const clouds = (() => {
   class Clouds {
     constructor(params) {
       this.params = params;
-
-      if (WEBGL.isWebGL2Available() === false) {
-        console.log(WEBGL.getWebGL2ErrorMessage());
-      }
 
       this.initialize();
       this.animate();

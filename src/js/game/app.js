@@ -148,17 +148,17 @@ class CarRacingGame {
   cameraUpdate() {
     //creating an offset position for camera with respect to the car
     var offset = new THREE.Vector3(
-      this.car.position.x + 10,
+      this.car.position.x + 12,
       this.car.position.y + 3,
       this.car.position.z
     );
     //tried to create delay position value for enable smooth transition for camera
-    this.mainCamera.position.lerp(offset, 0.2);
+    this.mainCamera.position.lerp(offset, 0.5);
     //updating lookat alway look at the car
     this.mainCamera.lookAt(
-      this.car.position.x,
+      this.car.position.x - 10,
       this.car.position.y,
-      this.car.position.z
+      this.car.position.z - 7
     );
   }
 }
