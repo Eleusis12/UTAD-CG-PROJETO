@@ -39,7 +39,7 @@ class CarRacingGame {
       40,
       window.innerWidth / window.innerHeight,
       0.1,
-      100
+      400
     );
 
     this.PerspectiveCamera.position.set(4.25, 1.4, -4.5);
@@ -68,7 +68,7 @@ class CarRacingGame {
     // new OrbitControls(this.mainCamera, this.renderer.domElement);
 
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x0c1445);
+    this.scene.background = new THREE.Color(0x1668a6);
     this.scene.fog = new THREE.Fog(0x000000, 500, 10000);
 
     this.moon = new moon.Moon({

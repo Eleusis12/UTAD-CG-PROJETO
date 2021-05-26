@@ -9,7 +9,7 @@ export const clouds = (() => {
   class Clouds {
     constructor(params) {
       this.params = params;
-
+      this.meshes = [];
       this.initialize();
       this.animate();
     }
@@ -172,18 +172,37 @@ export const clouds = (() => {
         transparent: true,
       });
 
-      this.mesh = new THREE.Mesh(geometry, material);
-      this.mesh.position.y = 2;
-      this.params.scene.add(this.mesh);
+      this.fillArrayMeshes(geometry, material, 50);
+
+      console.log(this.meshes);
+
+      this.meshes.forEach((el) => {
+        el.scale.set(50, 40, 50);
+        el.position.y = math.rand_range(20, 40);
+        el.position.x = math.rand_range(-200, -40);
+        el.position.z = math.rand_range(-10000, -100);
+
+        this.params.scene.add(el);
+      });
 
       //
     }
+    fillArrayMeshes(geometry, material, len) {
+      var arr = [];
+      for (var i = 0; i < len; i++) {
+        this.meshes.push(new THREE.Mesh(geometry, material));
+      }
+      return arr;
+    }
+
     animate() {
-      this.mesh.material.uniforms.cameraPos.value.copy(
-        this.params.camera.position
-      );
-      this.mesh.rotation.y = -performance.now() / 7500;
-      this.mesh.material.uniforms.frame.value++;
+      this.meshes.forEach((element) => {
+        element.material.uniforms.cameraPos.value.copy(
+          this.params.camera.position
+        );
+        element.rotation.y = -performance.now() / 7500;
+        element.material.uniforms.frame.value++;
+      });
     }
   }
   return { Clouds: Clouds };
