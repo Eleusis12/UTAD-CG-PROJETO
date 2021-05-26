@@ -4,8 +4,10 @@ import { car } from "./car.js";
 import { moon } from "./moon.js";
 import { ground } from "./ground.js";
 import { road } from "./road.js";
+import { clouds } from "./clouds.js";
 
 import { RoomEnvironment } from "https://cdn.skypack.dev/three/examples/jsm/environments/RoomEnvironment.js";
+import { OrbitControls } from "https://cdn.skypack.dev/three/examples/jsm/controls/OrbitControls.js";
 
 class CarRacingGame {
   constructor() {
@@ -37,7 +39,7 @@ class CarRacingGame {
       40,
       window.innerWidth / window.innerHeight,
       0.1,
-      100
+      400
     );
 
     this.PerspectiveCamera.position.set(4.25, 1.4, -4.5);
@@ -63,8 +65,10 @@ class CarRacingGame {
       this.mainCamera = this.OrthographicCamera;
     }
 
+    // new OrbitControls(this.mainCamera, this.renderer.domElement);
+
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x0c1445);
+    this.scene.background = new THREE.Color(0x1668a6);
     this.scene.fog = new THREE.Fog(0x000000, 500, 10000);
 
     this.moon = new moon.Moon({
@@ -75,6 +79,11 @@ class CarRacingGame {
 
     this.road = new road.Road({
       scene: this.scene,
+    });
+
+    this.clouds = new clouds.Clouds({
+      scene: this.scene,
+      camera: this.mainCamera,
     });
 
     this.car = new car.Car({
@@ -112,6 +121,7 @@ class CarRacingGame {
 
   step(timeElapsed) {
     this.car.update(timeElapsed);
+    this.clouds.animate();
   }
   initInput() {
     document.addEventListener("keypress", (e) => this.onKeyPress(e), false);
@@ -138,17 +148,17 @@ class CarRacingGame {
   cameraUpdate() {
     //creating an offset position for camera with respect to the car
     var offset = new THREE.Vector3(
-      this.car.position.x + 10,
+      this.car.position.x + 12,
       this.car.position.y + 3,
       this.car.position.z
     );
     //tried to create delay position value for enable smooth transition for camera
-    this.mainCamera.position.lerp(offset, 0.2);
+    this.mainCamera.position.lerp(offset, 0.5);
     //updating lookat alway look at the car
     this.mainCamera.lookAt(
-      this.car.position.x,
+      this.car.position.x - 10,
       this.car.position.y,
-      this.car.position.z
+      this.car.position.z - 7
     );
   }
 }
