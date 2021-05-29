@@ -32,27 +32,27 @@ export const road = (() => {
 
       roadAmbOcclusion.wrapS = THREE.ClampToEdgeWrapping;
       roadAmbOcclusion.wrapT = THREE.RepeatWrapping;
-      roadAmbOcclusion.repeat.set(1, 1000);
+      roadAmbOcclusion.repeat.set(1, 2000);
       roadAmbOcclusion.encoding = THREE.sRGBEncoding;
 
       roadNormalTexture.wrapS = THREE.ClampToEdgeWrapping;
       roadNormalTexture.wrapT = THREE.RepeatWrapping;
-      roadNormalTexture.repeat.set(1, 1000);
+      roadNormalTexture.repeat.set(1, 2000);
       roadNormalTexture.encoding = THREE.sRGBEncoding;
 
       roadBaseTexture.wrapS = THREE.ClampToEdgeWrapping;
       roadBaseTexture.wrapT = THREE.RepeatWrapping;
-      roadBaseTexture.repeat.set(1, 1000);
+      roadBaseTexture.repeat.set(1, 2000);
       roadBaseTexture.encoding = THREE.sRGBEncoding;
 
       roadHeightTexture.wrapS = THREE.ClampToEdgeWrapping;
       roadHeightTexture.wrapT = THREE.RepeatWrapping;
-      roadHeightTexture.repeat.set(1, 1000);
+      roadHeightTexture.repeat.set(1, 2000);
       roadHeightTexture.encoding = THREE.sRGBEncoding;
 
       roadRoughNessTexture.wrapS = THREE.ClampToEdgeWrapping;
       roadRoughNessTexture.wrapT = THREE.RepeatWrapping;
-      roadRoughNessTexture.repeat.set(1, 1000);
+      roadRoughNessTexture.repeat.set(1, 2000);
       roadRoughNessTexture.encoding = THREE.sRGBEncoding;
 
       var roadMaterial = new THREE.MeshStandardMaterial({
@@ -64,7 +64,7 @@ export const road = (() => {
       });
 
       var mesh = new THREE.Mesh(
-        new THREE.PlaneGeometry(7, 10000, 5, 2000),
+        new THREE.PlaneGeometry(7, 20000, 5, 2000),
         roadMaterial
       );
 

@@ -178,7 +178,7 @@ export const clouds = (() => {
         el.scale.set(50, 40, 50);
         el.position.y = math.rand_range(20, 40);
         el.position.x = math.rand_range(-200, -40);
-        el.position.z = math.rand_range(-10000, -100);
+        el.position.z = math.rand_range(-20000, -100);
 
         this.params.scene.add(el);
       });

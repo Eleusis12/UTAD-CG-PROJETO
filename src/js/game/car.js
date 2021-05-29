@@ -11,6 +11,14 @@ export const car = (() => {
       this.velocity = 0.0;
       this.wheels = [];
 
+      // Máxima velocidade que o carro pode atingir
+      this.maxSpeed = 4;
+
+      // O carro desloca-se em sentido negativo, daí considerarmos que a aceleração tem que ser negativa
+      this.acceleration = -0.01;
+      this.desacceleration = 0.005;
+      this.currentAcceleration = 0;
+
       this.params = params;
 
       this.loadModel();
@@ -150,25 +158,38 @@ export const car = (() => {
       }
     }
     update(timeElapsed) {
-      // Inicializar a velocidade a 0
-      this.velocity = 0;
-
-      //   const time = -performance.now() / 1000;
+      // Se timeElapsed é um NaN, então definimos o timeElapsed como 0
+      timeElapsed = timeElapsed || 0;
 
       if (this.keys.w == true) {
-        this.velocity = 0.5;
+        this.currentAcceleration = this.acceleration;
       } else if (this.keys.s == true) {
-        this.velocity = -0.5;
+        this.currentAcceleration = this.desacceleration;
+      } else if (this.velocity !== 0) {
+        // Decaimento de velocidade quando não se carrega no pedal
+        this.currentAcceleration = this.velocity > 0 ? -0.0025 : 0.0025;
+      } else {
+        this.currentAcceleration = 0;
       }
 
-      this.position.z -= this.velocity;
+      this.velocity = this.velocity + this.currentAcceleration;
+      this.velocityDirection = this.velocity ? (this.velocity < 0 ? -1 : 1) : 0;
+
+      this.velocity =
+        this.velocityDirection *
+        Math.min(Math.abs(this.velocity), this.maxSpeed);
+
+      if (Math.abs(this.velocity) < 0.005) this.velocity = 0;
+      this.position.z += this.velocity;
 
       if (this.carModel) {
         this.carModel.position.copy(this.position);
         // console.log(this.carModel);
       }
+
+      // Rotação das rodas
       for (let i = 0; i < this.wheels.length; i++) {
-        this.wheels[i].rotation.x += -(this.velocity * Math.PI) / 20;
+        this.wheels[i].rotation.x += (this.velocity * Math.PI) / 50;
       }
     }
   }

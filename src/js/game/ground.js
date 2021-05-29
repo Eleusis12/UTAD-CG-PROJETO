@@ -26,26 +26,26 @@ export const ground = (() => {
 
       groundAmbOcclusion.wrapS = groundAmbOcclusion.wrapT =
         THREE.RepeatWrapping;
-      groundAmbOcclusion.repeat.set(2000, 2000);
+      groundAmbOcclusion.repeat.set(4000, 4000);
       groundAmbOcclusion.encoding = THREE.sRGBEncoding;
 
       groundNormalTexture.wrapS = groundNormalTexture.wrapT =
         THREE.RepeatWrapping;
-      groundNormalTexture.repeat.set(2000, 2000);
+      groundNormalTexture.repeat.set(4000, 4000);
       groundNormalTexture.encoding = THREE.sRGBEncoding;
 
       groundBaseTexture.wrapS = groundBaseTexture.wrapT = THREE.RepeatWrapping;
-      groundBaseTexture.repeat.set(2000, 2000);
+      groundBaseTexture.repeat.set(4000, 4000);
       groundBaseTexture.encoding = THREE.sRGBEncoding;
 
       groundHeightTexture.wrapS = groundHeightTexture.wrapT =
         THREE.RepeatWrapping;
-      groundHeightTexture.repeat.set(2000, 2000);
+      groundHeightTexture.repeat.set(4000, 4000);
       groundHeightTexture.encoding = THREE.sRGBEncoding;
 
       groundRoughNessTexture.wrapS = groundRoughNessTexture.wrapT =
         THREE.RepeatWrapping;
-      groundRoughNessTexture.repeat.set(2000, 2000);
+      groundRoughNessTexture.repeat.set(4000, 4000);
       groundRoughNessTexture.encoding = THREE.sRGBEncoding;
 
       var groundMaterial = new THREE.MeshStandardMaterial({
@@ -57,7 +57,7 @@ export const ground = (() => {
       });
 
       var mesh = new THREE.Mesh(
-        new THREE.PlaneBufferGeometry(10000, 10000, 100, 100),
+        new THREE.PlaneBufferGeometry(20000, 20000, 100, 100),
         groundMaterial
       );
       mesh.position.y = -0.2;
