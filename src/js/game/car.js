@@ -93,7 +93,7 @@ export const car = (() => {
           car: self.carModel,
           shift: -0.65,
         });
-        self.carLeftHeadLight = new carHeadLight.HeadLight({
+        self.carRightHeadLight = new carHeadLight.HeadLight({
           car: self.carModel,
           shift: 0.65,
         });
@@ -108,6 +108,7 @@ export const car = (() => {
 
       document.addEventListener("keydown", (e) => this.onKeyDown(e), false);
       document.addEventListener("keyup", (e) => this.onKeyUp(e), false);
+      document.addEventListener("keypress", (e) => this.onKeyPress(e), false);
     }
 
     onKeyDown(event) {
@@ -132,6 +133,19 @@ export const car = (() => {
           break;
         case 83:
           this.keys.s = false;
+          break;
+      }
+    }
+
+    onKeyPress(event) {
+      switch (event.code) {
+        // Desliga ou liga as luzes
+        case "KeyL":
+          this.carLeftHeadLight.light.intensity =
+            this.carLeftHeadLight.light.intensity === 0 ? 10 : 0;
+
+          this.carRightHeadLight.light.intensity =
+            this.carRightHeadLight.light.intensity === 0 ? 10 : 0;
           break;
       }
     }

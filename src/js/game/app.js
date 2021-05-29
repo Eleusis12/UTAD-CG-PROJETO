@@ -65,7 +65,10 @@ class CarRacingGame {
       this.mainCamera = this.OrthographicCamera;
     }
 
-    new OrbitControls(this.mainCamera, this.renderer.domElement);
+    // this.controls = new OrbitControls(
+    //   this.mainCamera,
+    //   this.renderer.domElement
+    // );
 
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(0x1668a6);
@@ -138,6 +141,7 @@ class CarRacingGame {
 
       // O utilizador quer mudar para a projeccção em perspetiva
       case "KeyP":
+        console.log(this.mainCamera.position);
         console.log("perspetiva");
         this.mainCamera = this.PerspectiveCamera;
 
@@ -146,20 +150,23 @@ class CarRacingGame {
   }
 
   cameraUpdate() {
-    // //creating an offset position for camera with respect to the car
-    // var offset = new THREE.Vector3(
-    //   this.car.position.x + 12,
-    //   this.car.position.y + 3,
-    //   this.car.position.z
-    // );
-    // //tried to create delay position value for enable smooth transition for camera
-    // this.mainCamera.position.lerp(offset, 0.5);
-    // //updating lookat alway look at the car
-    // this.mainCamera.lookAt(
-    //   this.car.position.x - 10,
-    //   this.car.position.y,
-    //   this.car.position.z - 7
-    // );
+    // creating an offset position for camera with respect to the car
+
+    var offset = new THREE.Vector3(
+      this.car.position.x + 12,
+      this.car.position.y + 3,
+      this.car.position.z
+    );
+    //tried to create delay position value for enable smooth transition for camera
+    this.mainCamera.position.lerp(offset, 0.5);
+    //updating lookat alway look at the car
+    this.mainCamera.lookAt(
+      this.car.position.x - 10,
+      this.car.position.y,
+      this.car.position.z - 7
+    );
+
+    // this.controls.update();
   }
 }
 
