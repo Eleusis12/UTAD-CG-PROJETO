@@ -65,7 +65,10 @@ class CarRacingGame {
       this.mainCamera = this.OrthographicCamera;
     }
 
-    // new OrbitControls(this.mainCamera, this.renderer.domElement);
+    // this.controls = new OrbitControls(
+    //   this.mainCamera,
+    //   this.renderer.domElement
+    // );
 
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(0x1668a6);
@@ -138,6 +141,7 @@ class CarRacingGame {
 
       // O utilizador quer mudar para a projeccção em perspetiva
       case "KeyP":
+        console.log(this.mainCamera.position);
         console.log("perspetiva");
         this.mainCamera = this.PerspectiveCamera;
 
@@ -146,7 +150,8 @@ class CarRacingGame {
   }
 
   cameraUpdate() {
-    //creating an offset position for camera with respect to the car
+    // creating an offset position for camera with respect to the car
+
     var offset = new THREE.Vector3(
       this.car.position.x + 12,
       this.car.position.y + 3,
@@ -160,6 +165,8 @@ class CarRacingGame {
       this.car.position.y,
       this.car.position.z - 7
     );
+
+    // this.controls.update();
   }
 }
 
