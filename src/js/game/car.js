@@ -1,5 +1,5 @@
 import * as THREE from "https://cdn.skypack.dev/three";
-
+import { carHeadLight } from "./carHeadLight.js";
 
 import { GLTFLoader } from "https://cdn.skypack.dev/three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "https://cdn.skypack.dev/three/examples/jsm/loaders/DRACOLoader.js";
@@ -86,6 +86,17 @@ export const car = (() => {
         mesh.renderOrder = 2;
         self.carModel.add(mesh);
         self.params.scene.add(self.carModel);
+
+        console.log(self.carModel);
+        // Adicionar os faróis
+        self.carLeftHeadLight = new carHeadLight.HeadLight({
+          car: self.carModel,
+          shift: -0.65,
+        });
+        self.carLeftHeadLight = new carHeadLight.HeadLight({
+          car: self.carModel,
+          shift: 0.65,
+        });
       });
     }
 

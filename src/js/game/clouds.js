@@ -174,8 +174,6 @@ export const clouds = (() => {
 
       this.fillArrayMeshes(geometry, material, 50);
 
-      console.log(this.meshes);
-
       this.meshes.forEach((el) => {
         el.scale.set(50, 40, 50);
         el.position.y = math.rand_range(20, 40);

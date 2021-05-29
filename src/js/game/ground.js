@@ -56,8 +56,6 @@ export const ground = (() => {
         roughnessMap: groundRoughNessTexture,
       });
 
-      console.log(groundMaterial);
-
       var mesh = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(10000, 10000),
         groundMaterial
