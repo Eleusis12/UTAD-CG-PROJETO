@@ -42,22 +42,24 @@ class CarRacingGame {
       400
     );
 
-    this.PerspectiveCamera.position.set(4.25, 1.4, -4.5);
+    this.PerspectiveCamera.position.set(12, 3, 3);
+    this.PerspectiveCamera.lookAt(-10, 0, -7);
 
     const size = 1;
     const near = 0;
     const far = 10000;
     this.OrthographicCamera = new THREE.OrthographicCamera(
-      -size,
-      size,
+      -size * 1.5,
+      size * 1.5,
       size,
       -size,
       near,
       far
     );
 
-    this.OrthographicCamera.zoom = 0.1;
-    this.OrthographicCamera.position.set(0, 0, 50);
+    this.OrthographicCamera.zoom = 0.05;
+    this.OrthographicCamera.position.set(0, 20, 0);
+    this.OrthographicCamera.lookAt(0, 0, -7);
 
     if (this.cameraMode === 0) {
       this.mainCamera = this.PerspectiveCamera;
@@ -150,22 +152,40 @@ class CarRacingGame {
   }
 
   cameraUpdate() {
-    // creating an offset position for camera with respect to the car
+    // Nesta função vamos ter que atualizar as duas câmeras, de modo a que quando o utilizador der switch entre as câmeras
+    // A transição seja suave
 
+    // Deslocação da câmera Perspetiva
+    // creating an offset position for camera with respect to the car
     var offset = new THREE.Vector3(
       this.car.position.x + 12,
       this.car.position.y + 3,
       this.car.position.z
     );
     //tried to create delay position value for enable smooth transition for camera
-    this.mainCamera.position.lerp(offset, 0.5);
+    this.PerspectiveCamera.position.lerp(offset, 0.5);
     //updating lookat alway look at the car
-    this.mainCamera.lookAt(
+    this.PerspectiveCamera.lookAt(
       this.car.position.x - 10,
       this.car.position.y,
       this.car.position.z - 7
     );
 
+    // Deslocação da câmera Ortográfica
+
+    var offset = new THREE.Vector3(
+      this.car.position.x,
+      this.car.position.y + 20,
+      this.car.position.z
+    );
+    //tried to create delay position value for enable smooth transition for camera
+    this.OrthographicCamera.position.lerp(offset, 0.5);
+    //updating lookat alway look at the car
+    this.OrthographicCamera.lookAt(
+      this.car.position.x,
+      this.car.position.y,
+      this.car.position.z - 7
+    );
     // this.controls.update();
   }
 }
