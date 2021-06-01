@@ -11,11 +11,11 @@ export const ground = (() => {
     initialize() {
       this.loadTextures();
 
-      this.setupTexture(this.groundAmbOcclusion, 2, 2000);
-      this.setupTexture(this.groundNormalTexture, 2, 2000);
-      this.setupTexture(this.groundColorTexture, 2, 2000);
-      this.setupTexture(this.groundHeightTexture, 2, 2000);
-      this.setupTexture(this.groundRoughNessTexture, 2, 2000);
+      this.setupTexture(this.groundAmbOcclusion, 20, 2000);
+      this.setupTexture(this.groundNormalTexture, 20, 2000);
+      this.setupTexture(this.groundColorTexture, 20, 2000);
+      this.setupTexture(this.groundHeightTexture, 20, 2000);
+      this.setupTexture(this.groundRoughNessTexture, 20, 2000);
 
       var groundMaterial = new THREE.MeshStandardMaterial({
         map: this.groundColorTexture,
@@ -26,7 +26,7 @@ export const ground = (() => {
       });
 
       // const data = this.generateHeight(20000, 20000);
-      var geometryLand = new THREE.PlaneBufferGeometry(20, 20000, 100, 100);
+      var geometryLand = new THREE.PlaneBufferGeometry(100, 20000, 100, 100);
       var geometryLandWithBumps = new THREE.PlaneBufferGeometry(
         500,
         20000,
@@ -60,6 +60,7 @@ export const ground = (() => {
 
       var mesh = new THREE.Mesh(geometryLand, groundMaterial);
       mesh.position.y = -1;
+      mesh.position.x = 40;
       mesh.rotation.x = -Math.PI / 2;
       mesh.receiveShadow = true;
       this.params.scene.add(mesh);

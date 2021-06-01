@@ -11,7 +11,7 @@ import { OrbitControls } from "https://cdn.skypack.dev/three/examples/jsm/contro
 
 class CarRacingGame {
   constructor() {
-    this.cameraMode = 0;
+    this.cameraMode = 1;
 
     this.initialize();
     this.initInput();
@@ -35,6 +35,50 @@ class CarRacingGame {
       false
     );
 
+    this.initCameras();
+
+    this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color(0x1668a6);
+    this.scene.fog = new THREE.Fog(0x000000, 500, 10000);
+
+    // Adiciona todos os objetos necessários à cena
+    this.moon = new moon.Moon({
+      scene: this.scene,
+    });
+
+    this.ground = new ground.Ground({ scene: this.scene });
+
+    this.road = new road.Road({
+      scene: this.scene,
+    });
+
+    this.clouds = new clouds.Clouds({
+      scene: this.scene,
+      camera: this.mainCamera,
+    });
+
+    this.car = new car.Car({
+      scene: this.scene,
+    });
+
+    // raf == RequestAnimationFrame
+    // Esta função define como a aplicação se vai comportar a cada frame
+    this.raf();
+    this.onWindowResize();
+  }
+
+  onWindowResize() {
+    this.mainCamera.aspect = window.innerWidth / window.innerHeight;
+    this.mainCamera.updateProjectionMatrix();
+
+    this.OrthographicCamera.aspect = window.innerWidth / window.innerHeight;
+    this.OrthographicCamera.updateProjectionMatrix();
+
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
+  // Inicializa as câmeras e define as suas posições e para onde devem olhar
+  initCameras() {
     this.PerspectiveCamera = new THREE.PerspectiveCamera(
       40,
       window.innerWidth / window.innerHeight,
@@ -48,9 +92,11 @@ class CarRacingGame {
     const size = 1;
     const near = 0;
     const far = 10000;
+
+    // Foi multiplicado o 2 nas componentes esquerda e direita, uma vez que o carro estava a parecer um pouco esticado na horintal
     this.OrthographicCamera = new THREE.OrthographicCamera(
-      -size * 1.5,
-      size * 1.5,
+      -size * 2,
+      size * 2,
       size,
       -size,
       near,
@@ -71,42 +117,6 @@ class CarRacingGame {
     //   this.mainCamera,
     //   this.renderer.domElement
     // );
-
-    this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x1668a6);
-    this.scene.fog = new THREE.Fog(0x000000, 500, 10000);
-
-    this.moon = new moon.Moon({
-      scene: this.scene,
-    });
-
-    this.ground = new ground.Ground({ scene: this.scene });
-
-    this.road = new road.Road({
-      scene: this.scene,
-    });
-
-    this.clouds = new clouds.Clouds({
-      scene: this.scene,
-      camera: this.mainCamera,
-    });
-
-    this.car = new car.Car({
-      scene: this.scene,
-    });
-
-    this.raf();
-    this.onWindowResize();
-  }
-
-  onWindowResize() {
-    this.mainCamera.aspect = window.innerWidth / window.innerHeight;
-    this.mainCamera.updateProjectionMatrix();
-
-    this.OrthographicCamera.aspect = window.innerWidth / window.innerHeight;
-    this.OrthographicCamera.updateProjectionMatrix();
-
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
   raf() {
@@ -143,8 +153,7 @@ class CarRacingGame {
 
       // O utilizador quer mudar para a projeccção em perspetiva
       case "KeyP":
-        console.log(this.mainCamera.position);
-        console.log("perspetiva");
+        console.log("Perspetiva");
         this.mainCamera = this.PerspectiveCamera;
 
         break;
