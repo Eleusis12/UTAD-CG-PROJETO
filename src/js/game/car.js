@@ -165,6 +165,11 @@ export const car = (() => {
         this.currentAcceleration = this.acceleration;
       } else if (this.keys.s == true) {
         this.currentAcceleration = this.desacceleration;
+
+        // Travar, de relembrar que velocidade negativa significa ir em frente
+        if (this.velocity < 0) {
+          this.currentAcceleration *= 3;
+        }
       } else if (this.velocity !== 0) {
         // Decaimento de velocidade quando não se carrega no pedal
         this.currentAcceleration = this.velocity > 0 ? -0.0025 : 0.0025;
@@ -189,7 +194,7 @@ export const car = (() => {
 
       // Rotação das rodas
       for (let i = 0; i < this.wheels.length; i++) {
-        this.wheels[i].rotation.x += (this.velocity * Math.PI) / 50;
+        this.wheels[i].rotation.x += (this.velocity * Math.PI) / 30;
       }
     }
   }
