@@ -68,8 +68,8 @@ export const trafficLight = (() => {
 			const poleGeometry = new THREE.CylinderGeometry(0.1, 0.1, 5);
 			const lightBoxGeometry = new THREE.BoxGeometry(0.3, 1, 0.5);
 
-			const structureMaterial = new THREE.MeshBasicMaterial({
-				color: 0xa9a9a9,
+			const structureMaterial = new THREE.MeshPhongMaterial({
+				color: 0x4b4b4b,
 			});
 
 			const pole = new THREE.Mesh(poleGeometry, structureMaterial);
@@ -118,7 +118,7 @@ export const trafficLight = (() => {
 		constructor(params) {
 			this.lightMesh = new THREE.Mesh(
 				new THREE.CircleGeometry(0.1, 20),
-				new THREE.MeshBasicMaterial({ color: 0x000000 })
+				new THREE.MeshPhongMaterial({ color: 0x000000 })
 			);
 
 			this.lightMesh.rotation.y = Math.PI / 2;

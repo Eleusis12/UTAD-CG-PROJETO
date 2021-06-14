@@ -11,15 +11,20 @@ import { math } from "./math.js";
 import { RoomEnvironment } from "https://cdn.skypack.dev/three/examples/jsm/environments/RoomEnvironment.js";
 import { OrbitControls } from "https://cdn.skypack.dev/three/examples/jsm/controls/OrbitControls.js";
 import { Clock } from "../../node_modules/three/build/three.module.js";
+import { jerryCan } from "./jerryCan.js";
 
-const SEPARATION_DISTANCE = 15;
+const LIGHT_SEPARATION_DISTANCE = 15;
+const JERRY_SEPARATION_DISTANCE = 30;
 
 class CarRacingGame {
 	constructor() {
-		this.cameraMode = 1;
+		this.cameraMode = 0;
 		this.lights = [];
-		this.unused = [];
-		this.separationDistance_ = SEPARATION_DISTANCE;
+		this.unusedLights = [];
+		this.jerrys = [];
+		this.unusedJerrys = [];
+		this.lightSeparationDistance_ = LIGHT_SEPARATION_DISTANCE;
+		this.jerrySeparationDistance_ = JERRY_SEPARATION_DISTANCE;
 
 		this.initialize();
 		this.initInput();
@@ -39,6 +44,9 @@ class CarRacingGame {
 		this.renderer.setAnimationLoop(() => {
 			this.lights.forEach((tl) => {
 				tl.tick(this.clock.getDelta());
+			});
+			this.jerrys.forEach((j) => {
+				j.tick(this.clock.getDelta());
 			});
 			this.renderer.render(this.scene, this.mainCamera);
 		});
@@ -79,11 +87,6 @@ class CarRacingGame {
 			scene: this.scene,
 		});
 
-		/* this.tl = new trafficLight.TrafficLight({
-			scene: this.scene,
-		}); */
-
-		// raf == RequestAnimationFrame
 		// Esta função define como a aplicação se vai comportar a cada frame
 		this.raf();
 		this.onWindowResize();
@@ -91,17 +94,51 @@ class CarRacingGame {
 
 	LastLightPosition() {
 		if (this.lights.length == 0) {
-			return this.car.position.z - SEPARATION_DISTANCE;
+			return this.car.position.z - LIGHT_SEPARATION_DISTANCE;
 		}
 
 		return this.lights[this.lights.length - 1].tlModel.position.z;
 	}
 
+	LastJerryPosition() {
+		if (this.jerrys.length == 0) {
+			return this.car.position.z - JERRY_SEPARATION_DISTANCE;
+		}
+
+		return this.jerrys[this.jerrys.length - 1].jerryCanModel.position.z;
+	}
+
+	SpawnJerryCan(last) {
+		let obj = null;
+
+		let nextPos =
+			last -
+			math.rand_range(
+				JERRY_SEPARATION_DISTANCE * 8,
+				JERRY_SEPARATION_DISTANCE * 11
+			);
+
+		if (this.unusedJerrys.length > 0) {
+			obj = this.unusedJerrys.pop();
+			obj.jerryCanModel.visible = true;
+			obj.updateKFTrack();
+		} else {
+			obj = new jerryCan.JerryCan({
+				scene: this.scene,
+				pos: nextPos,
+			});
+		}
+
+		obj.jerryCanModel.position.z = nextPos;
+
+		this.jerrys.push(obj);
+	}
+
 	SpawnLight(last) {
 		let obj = null;
 
-		if (this.unused.length > 0) {
-			obj = this.unused.pop();
+		if (this.unusedLights.length > 0) {
+			obj = this.unusedLights.pop();
 			obj.tlModel.visible = true;
 		} else {
 			obj = new trafficLight.TrafficLight({
@@ -110,14 +147,18 @@ class CarRacingGame {
 		}
 
 		obj.tlModel.position.z =
-			last - math.rand_range(SEPARATION_DISTANCE, SEPARATION_DISTANCE * 3);
+			last -
+			math.rand_range(
+				LIGHT_SEPARATION_DISTANCE * 8,
+				LIGHT_SEPARATION_DISTANCE * 11
+			);
 
 		this.lights.push(obj);
 	}
 
-	UpdateLights() {
-		const invisible = [];
-		const visible = [];
+	UpdateObjs() {
+		const invisibleLights = [];
+		const visibleLights = [];
 
 		for (let obj of this.lights) {
 			let difPos = obj.tlModel.position.z - this.car.position.z;
@@ -131,28 +172,64 @@ class CarRacingGame {
 				difPos > 0 &&
 				currentColor.equals(new THREE.Color(0xff0000))
 			) {
-				console.log("Lost");
+				alert("Game lost");
 			} else if (difPos > 15) {
-				invisible.push(obj);
+				invisibleLights.push(obj);
 				obj.tlModel.visible = false;
 			} else {
-				visible.push(obj);
+				visibleLights.push(obj);
 			}
 		}
 
-		this.lights = visible;
-		this.unused.push(...invisible);
-	}
-	MaybeSpawn() {
-		let last = this.LastLightPosition();
+		this.lights = visibleLights;
+		this.unusedLights.push(...invisibleLights);
 
-		if (this.lights.length < 7) {
-			if (Math.abs(last - this.car.position.z) < this.separationDistance_) {
-				this.separationDistance_ = math.rand_range(
-					SEPARATION_DISTANCE,
-					SEPARATION_DISTANCE * 2
+		const invisibleJerrys = [];
+		const visibleJerrys = [];
+
+		for (let obj of this.jerrys) {
+			let difPos = obj.jerryCanModel.position.z - this.car.position.z;
+
+			if (difPos > 15 || (difPos < 0.5 && difPos > 0)) {
+				invisibleJerrys.push(obj);
+				obj.jerryCanModel.visible = false;
+				alert("Fuel++");
+			} else {
+				visibleJerrys.push(obj);
+			}
+		}
+
+		this.jerrys = visibleJerrys;
+		this.unusedJerrys.push(...invisibleJerrys);
+	}
+
+	MaybeSpawn() {
+		let lastLight = this.LastLightPosition();
+		let lastJerry = this.LastJerryPosition();
+
+		if (this.lights.length < 4) {
+			if (
+				Math.abs(lastLight - this.car.position.z) <
+				this.lightSeparationDistance_
+			) {
+				this.lightSeparationDistance_ = math.rand_range(
+					LIGHT_SEPARATION_DISTANCE,
+					LIGHT_SEPARATION_DISTANCE * 2
 				);
-				this.SpawnLight(last);
+				this.SpawnLight(lastLight);
+			}
+		}
+
+		if (this.jerrys.length < 4) {
+			if (
+				Math.abs(lastJerry - this.car.position.z) <
+				this.jerrySeparationDistance_
+			) {
+				this.jerrySeparationDistance_ = math.rand_range(
+					JERRY_SEPARATION_DISTANCE,
+					JERRY_SEPARATION_DISTANCE * 2
+				);
+				this.SpawnJerryCan(lastJerry);
 			}
 		}
 	}
@@ -170,7 +247,7 @@ class CarRacingGame {
 	// Inicializa as câmeras e define as suas posições e para onde devem olhar
 	initCameras() {
 		this.PerspectiveCamera = new THREE.PerspectiveCamera(
-			40,
+			100,
 			window.innerWidth / window.innerHeight,
 			0.1,
 			400
@@ -210,7 +287,7 @@ class CarRacingGame {
 
 	func() {
 		this.MaybeSpawn();
-		this.UpdateLights();
+		this.UpdateObjs();
 	}
 
 	raf() {
@@ -223,6 +300,14 @@ class CarRacingGame {
 			this.renderer.render(this.scene, this.mainCamera);
 			this.cameraUpdate();
 			this.func();
+
+			var val = document.getElementById("dayNightSwitch").innerHTML;
+
+			if (val === "Day") {
+				this.scene.getObjectByName("dirLight").color.setHSL(0.1, 1, 0.95);
+			} else {
+				this.scene.getObjectByName("dirLight").color.setHSL(0, 0, 0);
+			}
 
 			this.previousRaf = t;
 		});

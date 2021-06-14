@@ -11,6 +11,23 @@
 
 		<div id="container"></div>
 
+        <button id="dayNightSwitch" onClick="switchLights()">Day</button>
+
+        <script>
+            function switchLights() {
+
+                var val = document.getElementById("dayNightSwitch").innerHTML;
+
+                if (val === "Day"){
+                    document.getElementById("dayNightSwitch").innerHTML = "Night";
+                }else{
+                    document.getElementById("dayNightSwitch").innerHTML = "Day";
+                }
+
+                
+            }
+        </script>
+
         <div id="footer">
 			
 
@@ -38,12 +55,12 @@
 
 		</div>
         <script>
+            var a = document.getElementById('sfx-background');
+            a.volume = 0.1;
+            //On load
 
-        //On load
-    document.getElementById('sfx-background').play();
 
-
-    </script>
+        </script>
         
     <script  src="js/game/app.js" type="module"></script>
     
